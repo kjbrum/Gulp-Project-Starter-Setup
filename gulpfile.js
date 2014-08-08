@@ -18,7 +18,7 @@ var htmlv = require('gulp-html-validator');
 var paths = {
 	scripts: ['js/**/*.js', '!js/app.min.js'],
 	sass: 'scss/**/*.scss',
-	images: ['img/**/*', '!img/compressed']
+	images: ['img/**/*', '!img/{compressed,compressed/**}']
 };
 
 var destPaths = {
@@ -55,7 +55,7 @@ gulp.task('sass', function() {
 gulp.task('images', function() {
 	gulp.src(paths.images)
 		.pipe(plumber())
-		.pipe(changed(destPaths.images))
+		.pipe(changed('img/*.*'))
 		.pipe(imagemin())
 		.pipe(gulp.dest(destPaths.images));
 });
@@ -70,6 +70,7 @@ gulp.task('validate', function() {
 });
 
 // Browser Sync - autoreload the browser
+// Additional Settings: http://www.browsersync.io/docs/options/
 gulp.task('browser-sync', function () {
 	var files = [
 		'**/*.html',
@@ -81,8 +82,8 @@ gulp.task('browser-sync', function () {
 	browserSync.init(files, {
 		server: {
 			baseDir: './'
-		}
-		// proxy: "gulp.dev" // Use instead if desired
+		},
+		port: 5555
 	});
 });
 
@@ -91,5 +92,6 @@ gulp.task('default', ['js', 'sass', 'validate', 'browser-sync', 'images'], funct
 	// Watch for changes made to files
 	gulp.watch(paths.scripts, ['js']);
 	gulp.watch(paths.sass, ['sass']);
+	gulp.watch(paths.images, ['images']);
 	gulp.watch('*.html', ['validate']);
 });
