@@ -18,7 +18,7 @@ To use this you'll need the following installed:
 
 ## Setup
 
-1. `git clone git@github.com:kjbrum/Gulp-Project-Setup.git` or download it into a directory of your choice.
+1. `git clone git@github.com:kjbrum/Gulp-Project-Starter-Setup.git` or download it into a directory of your choice.
 2. Then run `npm install` inside that directory. (This should install all the plugins needed)
 
 ## Usage
