@@ -13,6 +13,7 @@ var imagemin = require('gulp-imagemin');
 var changed = require('gulp-changed');
 var browserSync = require('browser-sync');
 var htmlv = require('gulp-html-validator');
+var notify = require('gulp-notify');
 
 // Define our paths
 var paths = {
@@ -31,42 +32,44 @@ var destPaths = {
 // Lint, minify, and concat our JS
 gulp.task('js', function() {
 	return gulp.src(paths.scripts)
-		.pipe(plumber())
-		.pipe(changed(destPaths.scripts))
+		.pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
 		.pipe(jshint())
 		.pipe(jshint.reporter('default'))
 		.pipe(uglify())
 		.pipe(concat('app.min.js'))
-		.pipe(gulp.dest(destPaths.scripts));
+		.pipe(gulp.dest(destPaths.scripts))
+		.pipe(notify('app.min.js updated!'));
 });
 
 // Compile our Sass
 gulp.task('sass', function() {
 	return gulp.src(paths.sass)
-		.pipe(plumber())
-		.pipe(changed(destPaths.sass))
+		.pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
 		.pipe(sass({sourceComments: 'map', sourceMap: 'sass'}))
 		.pipe(rename('app.css'))
 		.pipe(minifyCSS())
-		.pipe(gulp.dest(destPaths.sass));
+		.pipe(gulp.dest(destPaths.sass))
+		.pipe(notify('app.css updated!'));
 });
 
 // Compress images
 gulp.task('images', function() {
 	gulp.src(paths.images)
-		.pipe(plumber())
-		.pipe(changed('img/*.*'))
+		.pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+		// .pipe(changed('img/*.*'))
 		.pipe(imagemin())
-		.pipe(gulp.dest(destPaths.images));
+		.pipe(gulp.dest(destPaths.images))
+		.pipe(notify('Image(s) optimized!'));
 });
 
 // Validate HTML
 gulp.task('validate', function() {
 	gulp.src('*.html')
-		.pipe(plumber())
-		.pipe(changed(destPaths.html))
+		.pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+		// .pipe(changed(destPaths.html))
 		.pipe(htmlv())
-		.pipe(gulp.dest(destPaths.html));
+		.pipe(gulp.dest(destPaths.html))
+		.pipe(notify('HTML validated!'));
 });
 
 // Browser Sync - autoreload the browser
