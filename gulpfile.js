@@ -81,7 +81,7 @@ gulp.task('images', function() {
 });
 
 // Compress Images for Build
-gulp.task('buildImages', function() {
+gulp.task('build-images', function() {
 	return gulp.src(paths.images)
 		.pipe(plumber())
 		.pipe(imagemin({
@@ -136,5 +136,5 @@ gulp.task('default', function(cb) {
 
 // Build Task
 gulp.task('build', function(cb) {
-	runSequence('clean', 'buildImages', 'scripts', 'styles', cb);
+	runSequence('clean', 'build-images', 'scripts', 'styles', cb);
 });
