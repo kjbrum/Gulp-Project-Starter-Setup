@@ -15,6 +15,7 @@ var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
 var sass = require('gulp-sass');
+var sftp = require('gulp-sftp');
 var uglify = require('gulp-uglify');
 
 // Define our paths
@@ -99,6 +100,19 @@ gulp.task('validate', function() {
 		.pipe(htmlv())
 		.pipe(gulp.dest(destPaths.html))
 		.pipe(notify('HTML validated!'));
+});
+
+// Deploy with SFTP
+gulp.task('deploy', function() {
+	return gulp.src(['./*', '!./node_modules'])
+		.pipe(plumber())
+		.pipe(sftp({
+			host: 'website.com',
+			port: 21,
+			user: 'username',
+			pass: 'password',
+			remotePath: '/'
+		}));
 });
 
 // Watch for changes made to files
