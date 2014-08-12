@@ -14,7 +14,7 @@ var notify = require('gulp-notify');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
-var sass = require('gulp-sass');
+var sass = require('gulp-ruby-sass'); // Requires ruby
 var sftp = require('gulp-sftp');
 var uglify = require('gulp-uglify');
 
