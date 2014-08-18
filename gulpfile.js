@@ -18,10 +18,11 @@ var sass = require('gulp-ruby-sass'); // Requires ruby
 var sftp = require('gulp-sftp');
 var uglify = require('gulp-uglify');
 
+
 // Define our paths
 var paths = {
 	scripts: 'js/**/*.js',
-	styles: 'scss/**/*.scss',
+	styles: 'sass/**/*.scss',
 	images: 'img/**/*.{png,jpg,jpeg,gif}'
 };
 
@@ -32,14 +33,15 @@ var destPaths = {
 	html: 'build/validated'
 };
 
+var filesToMove = ['sass/fonts'];
+
 // Error Handling
-var handleErrors = function() {
 	// Send error to notification center with gulp-notify
+var handleErrors = function() {
 	notify.onError({
 		title: "Compile Error",
 		message: "<%= error.message %>"
 	}).apply(this, arguments);
-	// Keep gulp from hanging on this task
 	this.emit('end');
 };
 
@@ -47,14 +49,21 @@ var handleErrors = function() {
 gulp.task('styles', function() {
 	return gulp.src(paths.styles)
 		.pipe(plumber())
-		.pipe(sass({sourceComments: 'map', sourceMap: 'sass'}))
-		.on('error', handleErrors)
+		.pipe(sass({sourcemap: true, sourcemapPath: paths.styles}))
+		// .pipe(browserSync.reload({stream:true}))
+		.pipe(gulp.dest(destPaths.styles))
+		.pipe(notify('Styles task complete!'));
+});
+
+// Compile our Sass
+gulp.task('build-styles', function() {
+	return gulp.src(paths.styles)
+		.pipe(plumber())
+		.pipe(sass())
+		.pipe(minifyCSS())
 		.pipe(rename('main.css'))
 		.pipe(gulp.dest(destPaths.styles))
-		.pipe(minifyCSS())
-		.pipe(rename('main.min.css'))
-		.pipe(gulp.dest(destPaths.styles))
-		.pipe(notify('Styles tasks complete!'));
+		.pipe(notify('Build styles task complete!'));
 });
 
 // Lint, minify, and concat our JS
@@ -65,8 +74,9 @@ gulp.task('scripts', function() {
 		.pipe(jshint.reporter('default'))
 		.pipe(uglify())
 		.pipe(concat('main.min.js'))
+		// .pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.scripts))
-		.pipe(notify('Scripts tasks complete!'));
+		.pipe(notify('Scripts task complete!'));
 });
 
 // Compress Images
@@ -77,8 +87,9 @@ gulp.task('images', function() {
 			progressive: true,
 			interlaced: true
 		})))
+		// .pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.images))
-		.pipe(notify('Image optimized!'));
+		.pipe(notify('Image(s) optimized!'));
 });
 
 // Compress Images for Build
@@ -90,7 +101,7 @@ gulp.task('build-images', function() {
 			interlaced: true
 		}))
 		.pipe(gulp.dest(destPaths.images))
-		.pipe(notify('Image optimized!'));
+		.pipe(notify('Image(s) optimized!'));
 });
 
 // Validate HTML
@@ -129,18 +140,26 @@ gulp.task('browser-sync', function () {
 	var files = [
 		'**/*.html',
 		'**/*.php',
-		'build/**/*'
+		'build/css/main.min.css',
+		'build/js/main.min.js',
+		'build/img/**/*.{png,jpg,jpeg,gif}'
 	];
 	browserSync.init(files, {
 		server: {
 			baseDir: './'
 		},
-		port: 5555
+		port: 5555,
+		open: false
 	});
 });
 
 gulp.task('clean', function() {
 	return gulp.src('build').pipe(clean());
+});
+
+gulp.task('move', function() {
+	gulp.src(filesToMove)
+	.pipe(gulp.dest(destPaths.styles));
 });
 
 // Default Task
