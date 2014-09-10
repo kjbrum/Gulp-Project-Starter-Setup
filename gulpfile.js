@@ -15,28 +15,27 @@ var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
 var sass = require('gulp-ruby-sass'); // Requires ruby
-var sftp = require('gulp-sftp');
 var uglify = require('gulp-uglify');
-
+var cp = require('child_process');
 
 // Define our paths
 var paths = {
 	scripts: 'js/**/*.js',
 	styles: 'sass/**/*.scss',
+	fonts: 'sass/fonts/*',
 	images: 'img/**/*.{png,jpg,jpeg,gif}'
 };
 
 var destPaths = {
 	scripts: 'build/js',
 	styles: 'build/css',
+	fonts: 'build/fonts',
 	images: 'build/img/',
 	html: 'build/validated'
 };
 
-var filesToMove = ['sass/fonts'];
-
 // Error Handling
-	// Send error to notification center with gulp-notify
+// Send error to notification center with gulp-notify
 var handleErrors = function() {
 	notify.onError({
 		title: "Compile Error",
@@ -50,7 +49,8 @@ gulp.task('styles', function() {
 	return gulp.src(paths.styles)
 		.pipe(plumber())
 		.pipe(sass({sourcemap: true, sourcemapPath: paths.styles}))
-		// .pipe(browserSync.reload({stream:true}))
+		.pipe(gulp.dest(destPaths.styles))
+		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.styles))
 		.pipe(notify('Styles task complete!'));
 });
@@ -66,6 +66,7 @@ gulp.task('build-styles', function() {
 		.pipe(notify('Build styles task complete!'));
 });
 
+
 // Lint, minify, and concat our JS
 gulp.task('scripts', function() {
 	return gulp.src(paths.scripts)
@@ -74,9 +75,9 @@ gulp.task('scripts', function() {
 		.pipe(jshint.reporter('default'))
 		.pipe(uglify())
 		.pipe(concat('main.min.js'))
-		// .pipe(browserSync.reload({stream:true}))
+		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.scripts))
-		.pipe(notify('Scripts task complete!'));
+		.pipe(notify('Scripts tasks complete!'));
 });
 
 // Compress Images
@@ -87,9 +88,9 @@ gulp.task('images', function() {
 			progressive: true,
 			interlaced: true
 		})))
-		// .pipe(browserSync.reload({stream:true}))
+		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.images))
-		.pipe(notify('Image(s) optimized!'));
+		.pipe(notify('Image optimized!'));
 });
 
 // Compress Images for Build
@@ -101,7 +102,7 @@ gulp.task('build-images', function() {
 			interlaced: true
 		}))
 		.pipe(gulp.dest(destPaths.images))
-		.pipe(notify('Image(s) optimized!'));
+		.pipe(notify('Image optimized!'));
 });
 
 // Validate HTML
@@ -113,23 +114,10 @@ gulp.task('validate', function() {
 		.pipe(notify('HTML validated!'));
 });
 
-// Deploy with SFTP
-gulp.task('deploy', function() {
-	return gulp.src(['./*', '!./node_modules'])
-		.pipe(plumber())
-		.pipe(sftp({
-			host: 'website.com',
-			port: 21,
-			user: 'username',
-			pass: 'password',
-			remotePath: '/'
-		}));
-});
-
 // Watch for changes made to files
 gulp.task('watch', function() {
 	gulp.watch(paths.scripts, ['scripts']);
-	gulp.watch(paths.styles, ['sass']);
+	gulp.watch(paths.styles, ['styles']);
 	gulp.watch(paths.images, ['images']);
 	gulp.watch('*.html', ['validate']);
 });
@@ -157,17 +145,17 @@ gulp.task('clean', function() {
 	return gulp.src('build').pipe(clean());
 });
 
-gulp.task('move', function() {
-	gulp.src(filesToMove)
-	.pipe(gulp.dest(destPaths.styles));
+gulp.task('move-fonts', function() {
+	gulp.src(paths.fonts)
+	.pipe(gulp.dest(destPaths.fonts));
 });
 
 // Default Task
 gulp.task('default', function(cb) {
-	runSequence('clean', 'images', 'scripts', 'styles', 'validate', 'browser-sync', 'watch', cb);
+	runSequence('clean', 'images', 'scripts', 'styles', 'move-fonts', 'browser-sync', 'watch', cb);
 });
 
 // Build Task
 gulp.task('build', function(cb) {
-	runSequence('clean', 'build-images', 'scripts', 'styles', cb);
+	runSequence('clean', 'build-images', 'build-styles', 'scripts', 'move-fonts', cb);
 });
