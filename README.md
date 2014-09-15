@@ -18,10 +18,12 @@ To use this you'll need the following installed:
 
 ## Setup
 
-1. `git clone git@github.com:kjbrum/Gulp-Project-Starter-Setup.git` or download it into a directory of your choice.
-2. Then run `npm install` inside that directory. (This should install all the plugins needed)
+1. `$ git clone git@github.com:kjbrum/Gulp-Project-Starter-Setup.git` or download it into a directory of your choice.
+2. Then run `$ npm install` inside that directory. (This should install all the plugins needed)
 
 ## Usage
 
-1. To start the browser syncing and file watching, just run `gulp` in the project directory.
+1. To start the browser syncing and file watching, just run `$ gulp` in the project directory.
 2. Folders and file paths can be changed in gulpfile.js
+
+**Note:** For WordPress projects, install Gulp into the theme directory
