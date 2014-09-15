@@ -49,7 +49,6 @@ gulp.task('styles', function() {
 	return gulp.src(paths.styles)
 		.pipe(plumber())
 		.pipe(sass({sourcemap: true, sourcemapPath: paths.styles}))
-		.pipe(gulp.dest(destPaths.styles))
 		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.styles))
 		.pipe(notify('Styles task complete!'));
@@ -136,8 +135,9 @@ gulp.task('browser-sync', function () {
 		server: {
 			baseDir: './'
 		},
-		port: 5555,
-		open: false
+		// proxy: 'sitename.dev', // Proxy for local dev sites
+		// port: 5555, // Sets the port in which to serve the site
+		// open: false // Stops BS from opening a new browser window
 	});
 });
 
