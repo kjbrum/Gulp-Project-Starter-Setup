@@ -49,7 +49,6 @@ gulp.task('styles', function() {
 	return gulp.src(paths.styles)
 		.pipe(plumber())
 		.pipe(sass({sourcemap: true, sourcemapPath: paths.styles}))
-		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.styles))
 		.pipe(notify('Styles task complete!'));
 });
@@ -74,7 +73,6 @@ gulp.task('scripts', function() {
 		.pipe(jshint.reporter('default'))
 		.pipe(uglify())
 		.pipe(concat('main.min.js'))
-		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.scripts))
 		.pipe(notify('Scripts tasks complete!'));
 });
@@ -87,7 +85,6 @@ gulp.task('images', function() {
 			progressive: true,
 			interlaced: true
 		})))
-		.pipe(browserSync.reload({stream:true}))
 		.pipe(gulp.dest(destPaths.images))
 		.pipe(notify('Image optimized!'));
 });
@@ -127,7 +124,7 @@ gulp.task('browser-sync', function () {
 	var files = [
 		'**/*.html',
 		'**/*.php',
-		'build/css/main.min.css',
+		'build/css/style.css',
 		'build/js/main.min.js',
 		'build/img/**/*.{png,jpg,jpeg,gif}'
 	];
