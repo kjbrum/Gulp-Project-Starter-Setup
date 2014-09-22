@@ -77,8 +77,13 @@ gulp.task('scripts', function() {
 		.pipe(notify('Scripts tasks complete!'));
 });
 
+gulp.task('clean-images', function() {
+	return gulp.src(destPaths.images+'/**/*')
+		.pipe(clean());
+});
+
 // Compress Images
-gulp.task('images', function() {
+gulp.task('images', ['clean-images'], function() {
 	return gulp.src(paths.images)
 		.pipe(plumber())
 		.pipe(cache(imagemin({
