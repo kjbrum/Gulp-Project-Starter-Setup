@@ -10,15 +10,15 @@ var htmlv = require('gulp-html-validator');
 var imagemin = require('gulp-imagemin');
 var jshint = require('gulp-jshint');
 var minifyCSS = require('gulp-minify-css');
-var notify = require('gulp-notify'); // requires Growl on Windows
+var notify = require('gulp-notify'); // Requires Growl on Windows
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
-var sass = require('gulp-ruby-sass'); // Requires ruby
+var sass = require('gulp-ruby-sass'); // Requires Ruby
 var uglify = require('gulp-uglify');
 var cp = require('child_process');
 
-// Define our paths
+// Define our Paths
 var paths = {
 	scripts: 'js/**/*.js',
 	styles: 'sass/**/*.scss',
@@ -44,7 +44,7 @@ var handleErrors = function() {
 	this.emit('end');
 };
 
-// Compile our Sass
+// Compile our SASS
 gulp.task('styles', function() {
 	return gulp.src(paths.styles)
 		.pipe(plumber())
@@ -53,7 +53,7 @@ gulp.task('styles', function() {
 		.pipe(notify('Styles task complete!'));
 });
 
-// Compile our Sass
+// Compile and Minify our SASS for Build
 gulp.task('build-styles', function() {
 	return gulp.src(paths.styles)
 		.pipe(plumber())
@@ -65,7 +65,7 @@ gulp.task('build-styles', function() {
 });
 
 
-// Lint, minify, and concat our JS
+// Lint, Minify, and Concat our JS
 gulp.task('scripts', function() {
 	return gulp.src(paths.scripts)
 		.pipe(plumber())
@@ -77,6 +77,7 @@ gulp.task('scripts', function() {
 		.pipe(notify('Scripts tasks complete!'));
 });
 
+// Clean Iimages Folder
 gulp.task('clean-images', function() {
 	return gulp.src(destPaths.images+'/**/*')
 		.pipe(clean());
@@ -143,10 +144,12 @@ gulp.task('browser-sync', function () {
 	});
 });
 
+// Clean Build Folder
 gulp.task('clean', function() {
 	return gulp.src('build').pipe(clean());
 });
 
+// Move Fonts to Build Folder
 gulp.task('move-fonts', function() {
 	gulp.src(paths.fonts)
 	.pipe(gulp.dest(destPaths.fonts));
