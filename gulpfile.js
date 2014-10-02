@@ -149,6 +149,11 @@ gulp.task('clean', function() {
 	return gulp.src('build').pipe(clean());
 });
 
+// Clear the cache for everything
+gulp.task('clear-cache', function() {
+  cache.clearAll();
+});
+
 // Move Fonts to Build Folder
 gulp.task('move-fonts', function() {
 	gulp.src(paths.fonts)
@@ -162,5 +167,5 @@ gulp.task('default', function(cb) {
 
 // Build Task
 gulp.task('build', function(cb) {
-	runSequence('clean', 'build-images', 'build-styles', 'scripts', 'move-fonts', cb);
+	runSequence('clean', 'clear-cache', 'build-images', 'build-styles', 'scripts', 'move-fonts', cb);
 });
