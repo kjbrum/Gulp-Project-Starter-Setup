@@ -5,6 +5,7 @@ A starter setup for a gulp project including:
 + JS (lint, minify, and concat)
 + SASS (compile)
 + CSS (minify)
++ Autoprefixer (Vendor Prefixes)
 + Images (image compression)
 + BrowserSync (css injection)
 + HTML Validation (Run through W3C)
