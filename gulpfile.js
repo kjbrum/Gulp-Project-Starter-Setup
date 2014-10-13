@@ -82,20 +82,20 @@ gulp.task('scripts', function() {
 		.pipe(notify('Scripts tasks complete!'));
 });
 
-// Clean Iimages Folder
+// Clean Images Folder
 gulp.task('clean-images', function() {
 	return gulp.src(destPaths.images+'/**/*')
 		.pipe(clean());
 });
 
-// Compress Images
+// Move Images to build folder
 gulp.task('images', ['clean-images'], function() {
 	return gulp.src(paths.images)
 		.pipe(plumber())
-		.pipe(cache(imagemin({
-			progressive: true,
-			interlaced: true
-		})))
+		// .pipe(cache(imagemin({
+		// 	progressive: true,
+		// 	interlaced: true
+		// })))
 		.pipe(gulp.dest(destPaths.images))
 		.pipe(notify('Image optimized!'));
 });
