@@ -28,3 +28,11 @@ To use this you'll need the following installed:
 2. Folders and file paths can be changed in gulpfile.js
 
 **Note:** For WordPress projects, install Gulp into the theme directory
+
+## Build Task
+
++ The build task should be ran when your project is ready for production.
++ What does the build task do differently?
+  + Compress your images
+  + Minify your CSS and not create sourcemaps
+  + Not start BrowserSync
