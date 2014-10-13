@@ -88,14 +88,10 @@ gulp.task('clean-images', function() {
 		.pipe(clean());
 });
 
-// Move Images to build folder
+// Move Images to Build Folder
 gulp.task('images', ['clean-images'], function() {
 	return gulp.src(paths.images)
 		.pipe(plumber())
-		// .pipe(cache(imagemin({
-		// 	progressive: true,
-		// 	interlaced: true
-		// })))
 		.pipe(gulp.dest(destPaths.images))
 		.pipe(notify('Image optimized!'));
 });
