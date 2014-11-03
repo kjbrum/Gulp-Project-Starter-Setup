@@ -16,7 +16,6 @@ var rename = require('gulp-rename');
 var runSequence = require('run-sequence');
 var sass = require('gulp-ruby-sass'); // Requires Ruby
 var uglify = require('gulp-uglify');
-var cp = require('child_process');
 
 // Define our Paths
 var paths = {
