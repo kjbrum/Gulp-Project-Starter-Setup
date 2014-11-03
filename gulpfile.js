@@ -7,7 +7,6 @@ var browserSync = require('browser-sync');
 var cache = require('gulp-cache');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
-var htmlv = require('gulp-html-validator');
 var imagemin = require('gulp-imagemin');
 var jshint = require('gulp-jshint');
 var minifyCSS = require('gulp-minify-css');
@@ -31,8 +30,7 @@ var destPaths = {
 	scripts: 'build/js',
 	styles: 'build/css',
 	fonts: 'build/fonts',
-	images: 'build/img/',
-	html: 'build/validated'
+	images: 'build/img/'
 };
 
 // Error Handling
@@ -64,7 +62,6 @@ gulp.task('build-styles', function() {
 			cascade: false
 		}))
 		.pipe(minifyCSS())
-		.pipe(rename('main.css'))
 		.pipe(gulp.dest(destPaths.styles))
 		.pipe(notify('Build styles task complete!'));
 });
@@ -108,21 +105,11 @@ gulp.task('build-images', function() {
 		.pipe(notify('Image optimized!'));
 });
 
-// Validate HTML
-gulp.task('validate', function() {
-	return gulp.src('*.html')
-		.pipe(plumber())
-		.pipe(htmlv())
-		.pipe(gulp.dest(destPaths.html))
-		.pipe(notify('HTML validated!'));
-});
-
 // Watch for changes made to files
 gulp.task('watch', function() {
 	gulp.watch(paths.scripts, ['scripts']);
 	gulp.watch(paths.styles, ['styles']);
-	gulp.watch(paths.images, ['images']);
-	gulp.watch('*.html', ['validate']);
+	gulp.watch(paths.images, ['images'])
 });
 
 // Browser Sync - autoreload the browser
