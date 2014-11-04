@@ -5,8 +5,8 @@ var gulp = require('gulp');
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync');
 var cache = require('gulp-cache');
-var clean = require('gulp-clean');
 var concat = require('gulp-concat');
+var del = require('del');
 var imagemin = require('gulp-imagemin');
 var jshint = require('gulp-jshint');
 var minifyCSS = require('gulp-minify-css');
@@ -79,9 +79,8 @@ gulp.task('scripts', function() {
 });
 
 // Clean Images Folder
-gulp.task('clean-images', function() {
-	return gulp.src(destPaths.images+'/**/*')
-		.pipe(clean());
+gulp.task('clean-images', function(cb) {
+	del([destPaths.images], cb);
 });
 
 // Move Images to Build Folder
@@ -139,8 +138,8 @@ gulp.task('browser-sync', function () {
 });
 
 // Clean Build Folder
-gulp.task('clean', function() {
-	return gulp.src('build').pipe(clean());
+gulp.task('clean', function(cb) {
+	del(['build'], cb);
 });
 
 // Clear the cache for everything
