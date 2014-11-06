@@ -126,7 +126,7 @@ gulp.task('browser-sync', function () {
 		},
 		// proxy: 'sitename.dev', // Proxy for local dev sites
 		// port: 5555, // Sets the port in which to serve the site
-		// open: false // Stops BS from opening a new browser window
+		// open: false, // Stops BS from opening a new browser window
 		// ghostMode: { // Disable ghosting features (Useful when sharing a link for people to troubleshoot)
 		// 	clicks: false,
 		// 	location: false,
