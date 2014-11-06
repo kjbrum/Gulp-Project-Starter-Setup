@@ -8,7 +8,6 @@ A starter setup for a gulp project including:
 + Autoprefixer (Vendor Prefixes)
 + Images (image compression)
 + BrowserSync (css injection)
-+ HTML Validation (Run through W3C)
 
 ## Requirements
 
